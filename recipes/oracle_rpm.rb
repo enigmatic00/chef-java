@@ -56,3 +56,9 @@ package package_name  do
   version node['java']['oracle_rpm']['package_version'] if node['java']['oracle_rpm']['package_version']
   notifies :run, 'bash[update-java-alternatives]', :immediately if platform_family?('rhel', 'fedora') and node['java']['set_default']
 end
+
+if(node.recipe?('yum-gd') && package_name=='java-1.7.0-oracle')
+  link '/usr/lib/jvm/java' do
+    to node['java']['java_home']
+  end
+end
